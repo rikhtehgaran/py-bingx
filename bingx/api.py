@@ -3,9 +3,13 @@ import base64
 import json
 import urllib.parse
 import urllib.request
+import time
 
-from .utilities import get_system_time
+def convert_date_to_epoch_ms(time):
+    pass
 
+def get_system_time():
+    return str(int(time.time() * 1000))
 
 class BingxAPI(object):
     ROOT_URL = "https://open-api.bingx.com"
