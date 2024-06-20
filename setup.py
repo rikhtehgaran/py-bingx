@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name='py-bingx-d',
-    version='0.1',
+    version='0.2',
     license='MIT',
     author="Danial Rikhteh Garan",
     description='BingX REST API Python implementation Pluse',

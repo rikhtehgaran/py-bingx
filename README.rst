@@ -2,7 +2,7 @@
 This is py-bingx-d
 ==================
 
-Updated 4 March 2024 ⏰
+Updated 20 Jun 2024 ⏰
 
 .. image:: https://img.shields.io/pypi/v/py-bingx.svg
     :target: https://pypi.python.org/pypi/py-bingx
@@ -86,11 +86,12 @@ Trading Functions 📈
 - ``cancel_batch_orders()`` - Cancels multiple pending orders ❌
 
 Examples 📝
--------
+-----------
 
 Pay attention to some examples:
 
 * **Account Info:**
+
 Use this code to get balance , equity , used margin , free margin and floating tp of your account
 
 .. code:: python
@@ -120,6 +121,7 @@ Use this code to get balance , equity , used margin , free margin and floating t
     last_price = float(bingx.get_latest_price(symbol))
 
 * **All pending orders**
+
 Use this code to get all pending orders such as tp's
 
 .. code:: python
@@ -129,6 +131,7 @@ Use this code to get all pending orders such as tp's
     all_pending_orders = bingx.query_pending_orders(symbol)
 
 * **Open limit order / set tp**
+
 Use this code to open limit order , Set TP for open order
 
 .. code:: python
