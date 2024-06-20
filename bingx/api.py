@@ -15,10 +15,11 @@ class BingxAPI(object):
     ROOT_URL = "https://open-api.bingx.com"
     DEMO_URL = "https://open-api-vst.bingx.com"
 
-    def __init__(self, api_key, secret_key,demo=False, timestamp="local"):
+    def __init__(self, api_key, secret_key,demo=False,timeout=15, timestamp="local"):
         self.API_KEY = api_key
         self.SECRET_KEY = secret_key
         self.timestamp = timestamp
+        self.timeout=timeout
         if demo:
             self.ROOT_URL = self.DEMO_URL
         self.HEADERS = {'User-Agent': 'Mozilla/5.0',
@@ -51,7 +52,7 @@ class BingxAPI(object):
 
     def _post(self, url, body):
         request = urllib.request.Request(url, data=body.encode("utf-8"), headers=self.HEADERS, method="POST")
-        response = urllib.request.urlopen(request).read()
+        response = urllib.request.urlopen(request,timeout=self.timeout).read()
         json_object = json.loads(response.decode('utf8'))
         return json_object
 
@@ -59,7 +60,7 @@ class BingxAPI(object):
         if params != "":
             url = url + "?" + params
         request = urllib.request.Request(url, headers=self.HEADERS, method="DELETE")
-        response = urllib.request.urlopen(request).read()
+        response = urllib.request.urlopen(request,timeout=self.timeout).read()
         json_object = json.loads(response.decode('utf8'))
         return json_object
 
@@ -67,7 +68,7 @@ class BingxAPI(object):
         if params != "":
             url = url + "?" + params
         request = urllib.request.Request(url, headers=self.HEADERS)
-        response = urllib.request.urlopen(request).read()
+        response = urllib.request.urlopen(request,timeout=self.timeout).read()
         json_object = json.loads(response.decode('utf8'))
         return json_object
 

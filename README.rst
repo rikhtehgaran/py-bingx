@@ -15,7 +15,7 @@ Updated 4 March 2024 ⏰
    :alt: Star This Project
 
 
-py-bingx-d is developed (`py-bingx package <https://github.com/amirinsight/py-bingx>`_) an unofficial Python wrapper for the `BingX Perpetual Swap API <https://bingx-api.github.io/docs/swap/introduce.html>`_. You can use this package to create trading bots. Make sure to read my `disclaimer <https://github.com/rikhtehgaran/py-bingx#disclaimer>`_ and consider starring this project.
+py-bingx-d is an unofficial Python wrapper for the `BingX Perpetual Swap API <https://bingx-api.github.io/docs/swap/introduce.html>`_. You can use this package to create trading bots. Make sure to read my `disclaimer <https://github.com/rikhtehgaran/py-bingx#disclaimer>`_ and consider starring this project.
 
 Usage
 -----
@@ -33,13 +33,9 @@ and make sure you copy your Secret Key before leaving the page. 🗝
 
     from bingx.api import BingxAPI 
 
-    ...
-
-    # Please note that it is smarter to use environment variables than hard coding your keys into your code.
     API_KEY = '<api_public_key>' 
     SECRET_KEY = '<api_secret_key>'
 
-    # It is faster and more efficient to use local timestamps. If you are getting an error try using "server" timestamp.
     bingx = BingxAPI(API_KEY, SECRET_KEY, demo=False, timestamp="local") # For use VST demo account set demo to True
     order_data = bingx.open_market_order('BTC-USDT', 'LONG', 0.01, tp="63277", sl="60658")
 
@@ -89,18 +85,60 @@ Trading Functions 📈
 - ``cancel_all_orders_of_symbol()`` - Cancels all pending orders for a trading pair ❌
 - ``cancel_batch_orders()`` - Cancels multiple pending orders ❌
 
-TODO 📝
+Examples 📝
 -------
 
-This package is functional but the following list should be achieved pre release:
+Pay attention to some examples:
 
-- Add Response exception handling. 💥
-- Implement the remaining less important endpoints. 🔧
-- Leverage async/await (Use async methods and aiohttp to make requests asynchronously rather than blocking.) ⚡
-- Add proper logging. (Add a structured logger like loguru to log requests, errors etc.) 📝
-- Write tests. (Add unit and integration tests using pytest) ✅
-- Refactor code to be more pythonic and modular. 🐍
-- Add WS support to report order updates.
+* **Account Info:**
+Use this code to get balance , equity , used margin , free margin and floating tp of your account
+
+.. code:: python
+
+    from bingx.api import BingxAPI
+
+    API_KEY = '<api_public_key>'
+    SECRET_KEY = '<api_secret_key>'
+
+    bingx = BingxAPI(API_KEY, SECRET_KEY, demo=False, timestamp="local") # For use VST demo account set demo to True
+    account_info = bingx.get_perpetual_balance()
+
+    balance = "{:,.0f} $".format(float(account_info['data']['balance'].get('balance', None)))
+    equity = "{:,.0f} $".format(float(account_info['data']['balance'].get('equity', None)))
+    used_margin="{:,.0f} $".format(float(account_info['data']['balance'].get('usedMargin', None)))
+    free_margin = "{:,.0f} $".format(float(account_info['data']['balance'].get('availableMargin', None)))
+    float_tp = "{:,.0f} $".format(float(account_info['data']['balance'].get('unrealizedProfit', None)))
+
+* **Open positions / Pending orders / Last price**
+
+.. code:: python
+
+    bingx = BingxAPI(API_KEY, SECRET_KEY, demo=False, timestamp="local")
+
+    open_positions = bingx.get_my_perpetual_swap_positions(symbol)
+    pending_orders = bingx.query_pending_orders(symbol)
+    last_price = float(bingx.get_latest_price(symbol))
+
+* **All pending orders**
+Use this code to get all pending orders such as tp's
+
+.. code:: python
+
+    bingx = BingxAPI(API_KEY, SECRET_KEY, demo=False, timestamp="local")
+
+    all_pending_orders = bingx.query_pending_orders(symbol)
+
+* **Open limit order / set tp**
+Use this code to open limit order , Set TP for open order
+
+.. code:: python
+
+    bingx = BingxAPI(API_KEY, SECRET_KEY, demo=False, timestamp="local")
+
+    limit_order = bingx.open_limit_order(symbol, "LONG", price, vol)
+
+    market_order = bingx.open_market_order(symbol, "LONG", vol)
+    tp_order = bingx.open_limit_order(symbol,"LONG",tp_price,tp_vol,working_type="CONTRACT_PRICE",stop_price=tp_price,side="SELL",trade_type='TAKE_PROFIT')
 
 Disclaimer 📜
 -------------
